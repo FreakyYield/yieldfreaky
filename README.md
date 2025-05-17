@@ -27,7 +27,7 @@ BUT..... still not owned by a **pedo**... and still **better**...
 
 ## 💻 how do i use this fuckass script
 
-- you really dont need a tutorial for that do you..
+- lick the execute button
 
 <!--
 **FreakyYield/freakyyield** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
