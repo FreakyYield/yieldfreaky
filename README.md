@@ -21,21 +21,21 @@ BUT..... still not owned by a **pedo**... and still **better**...
 - `;facerape` - facerape  
 - `;fly` - fly but fucking better cause iy fly is shit  
 - `;infjump` - already there except that now it doesnt give you superjump each time you try jumping.. actual working infjump  
-- `;salute` - neo salute
+- `;salute` - neo salute  
 - `;shaders` - freaky shaders
 
-## and more (no but soon)
+[and more](https://github.com/FreakyYield/yieldfreaky/blob/main/changelog.json)
 
 ---
 
 ## donate pls
 
 - `SOL` - 3tkj86UxstaygKnfRoq4bfTNrbDHSRoZ5J6HXnTpbddj  
-- `LTC` - LPwWfPdkG2x8VY5yheaJUewMqbTwMcy1bH
-- `BTC` - bc1q2p2y8xlz3ll06yjch3xaew4jggsgvs5k8qveju
+- `LTC` - LPwWfPdkG2x8VY5yheaJUewMqbTwMcy1bH  
+- `BTC` - bc1q2p2y8xlz3ll06yjch3xaew4jggsgvs5k8qveju  
 - `XMR` - 41f2JeBbtqHLUeCGB1vfHLSonaEoSEimMCmWEJqpFLjXQp7F5bntob24UwaAWos8ujKhsp4gkfTkbP1a5pFr57mo3ByhZ8U (MONERO)
 
-**Current donators**
+**Current donators**  
 - `None. We are broke.`
 
 ---
@@ -44,6 +44,3 @@ BUT..... still not owned by a **pedo**... and still **better**...
 
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/FreakyYield/yieldfreaky/refs/heads/main/main/script.luau"))()
-```
-
-- lick the execute button
