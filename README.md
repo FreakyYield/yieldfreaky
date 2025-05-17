@@ -25,7 +25,7 @@ BUT..... still not owned by a **pedo**... and still **better**...
 
 ---
 
-## 💻 How 2 Use
+## 💻 how do i use this fuckass script
 
 - you really dont need a tutorial for that do you..
 
