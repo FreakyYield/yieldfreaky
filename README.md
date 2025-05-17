@@ -20,6 +20,7 @@ BUT..... still not owned by a **pedo**... and still **better**...
 
 - `;facerape` — facerape
 - `;fly` - fly but fucking better cause iy fly is shit
+- `;infjump` - already there except that now it doesnt give you superjump each time you try jumping.. actual working infjump
 ## and more (no but soon)
 
 ---
