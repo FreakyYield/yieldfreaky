@@ -29,10 +29,11 @@ BUT..... still not owned by a **pedo**... and still **better**...
 ---
 
 ## donate pls
-> SOL : 3tkj86UxstaygKnfRoq4bfTNrbDHSRoZ5J6HXnTpbddj
-> LTC : LPwWfPdkG2x8VY5yheaJUewMqbTwMcy1bH
-> BTC : bc1q2p2y8xlz3ll06yjch3xaew4jggsgvs5k8qveju
-> XMR : 41f2JeBbtqHLUeCGB1vfHLSonaEoSEimMCmWEJqpFLjXQp7F5bntob24UwaAWos8ujKhsp4gkfTkbP1a5pFr57mo3ByhZ8U (MONERO)
+
+- `SOL` - 3tkj86UxstaygKnfRoq4bfTNrbDHSRoZ5J6HXnTpbddj  
+- `LTC` - LPwWfPdkG2x8VY5yheaJUewMqbTwMcy1bH
+- `BTC` - bc1q2p2y8xlz3ll06yjch3xaew4jggsgvs5k8qveju
+- `XMR` - 41f2JeBbtqHLUeCGB1vfHLSonaEoSEimMCmWEJqpFLjXQp7F5bntob24UwaAWos8ujKhsp4gkfTkbP1a5pFr57mo3ByhZ8U (MONERO)
 
 **Current donators**
 - `None. We are broke.`
