@@ -4,7 +4,7 @@ end
 _G.Fly = false
 _G.FlySpeed = 0.5
 
-writefile("icon.png",game:HttpGet("https://raw.githubusercontent.com/FreakyYield/yieldfreaky/main/assets/icon.png")) -- we dont care if its already downloaded it takes 2secs
+writefile("icon.png",game:HttpGet("https://raw.githubusercontent.com/FreakyYield/yieldfreaky/main/assets/icon.png"))
 
 pcall(function() getgenv().FY_LOADED = true end)
 
