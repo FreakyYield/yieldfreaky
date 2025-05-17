@@ -37,7 +37,8 @@ BUT..... still not owned by a **pedo**... and still **better**...
 
 **Current donators**
 - `None. We are broke.`
---
+
+---
 
 ## 💻 how do i use this fuckass script
 
