@@ -28,7 +28,7 @@ BUT..... still not owned by a **pedo**... and still **better**...
 ## 💻 how do i use this fuckass script
 
 ```lua
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/FreakyYield/yieldfreaky/refs/heads/main/main/script.luau"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FreakyYield/yieldfreaky/refs/heads/main/main/script.luau"))()
 ```
 
 - lick the execute button
