@@ -1,5 +1,5 @@
 _G.flinging=true;
-	for _, child in pairs(speaker.Character:GetDescendants()) do
+	for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 		if child:IsA("BasePart") then
 			child.CustomPhysicalProperties = PhysicalProperties.new(math.huge, 0.3, 0.5)
 		end
@@ -12,7 +12,7 @@ _G.flinging=true;
 	bambam.AngularVelocity = Vector3.new(0,99999,0)
 	bambam.MaxTorque = Vector3.new(0,math.huge,0)
 	bambam.P = math.huge
-	local Char = speaker.Character:GetChildren()
+	local Char = game.Players.LocalPlayer.Character:GetChildren()
 	for i, v in next, Char do
 		if v:IsA("BasePart") then
 			v.CanCollide = false
@@ -24,7 +24,7 @@ _G.flinging=true;
 	local function flingDiedF()
 		execCmd('unfling')
 	end
-	flingDied = speaker.Character:FindFirstChildOfClass('Humanoid').Died:Connect(flingDiedF)
+	_G.flingDied = game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').Died:Connect(flingDiedF)
 	repeat
 		bambam.AngularVelocity = Vector3.new(0,99999,0)
 		wait(.2)
