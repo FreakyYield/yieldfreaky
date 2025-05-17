@@ -20,7 +20,7 @@ _G.flinging=true;
 			v.Velocity = Vector3.new(0, 0, 0)
 		end
 	end
-	flinging = true
+	_G.flinging = true
 	local function flingDiedF()
 		execCmd('unfling')
 	end
@@ -30,4 +30,4 @@ _G.flinging=true;
 		wait(.2)
 		bambam.AngularVelocity = Vector3.new(0,0,0)
 		wait(.1)
-	until flinging == false
+	until _G.flinging == false
