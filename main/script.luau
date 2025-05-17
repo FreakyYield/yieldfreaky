@@ -4401,7 +4401,7 @@ CMDs[#CMDs + 1] = {NAME = 'unfly', DESC = 'Disables fly'}
 CMDs[#CMDs + 1] = {NAME = 'flyspeed [num]', DESC = 'Set fly speed (default is 20)'}
 CMDs[#CMDs + 1] = {NAME = 'vehiclefly / vfly [speed]', DESC = 'Makes you fly in a vehicle'}
 CMDs[#CMDs + 1] = {NAME = 'hitler / salute / nazi', DESC = 'Nazi salute'}
-CMDs[#CMDs + 1] = {NAME = "shaders / lag', DESC = 'good shaders that don't affect fps"}
+CMDs[#CMDs + 1] = {NAME = "shaders / lag", DESC = "good shaders that don't affect fps"}
 CMDs[#CMDs + 1] = {NAME = 'fuckhitler / nosalute / unhitler', DESC = 'glad you converted brother, may god bless you'}
 CMDs[#CMDs + 1] = {NAME = 'unvehiclefly / unvfly', DESC = 'Disables vehicle fly'}
 CMDs[#CMDs + 1] = {NAME = 'vehicleflyspeed  / vflyspeed [num]', DESC = 'Set vehicle fly speed'}
@@ -6799,6 +6799,7 @@ local lighting=game:GetService("Lighting");
 local runservice=game:GetService("RunService");
 local tweenservice=game:GetService("TweenService");
 local debris=game:GetService("Debris");
+Lighting.GlobalShadows = true
 local function apply_rtx_shader()
 settings().Rendering.QualityLevel=Enum.QualityLevel.Level21;
 settings().Rendering.EnableFRM=true;
@@ -6839,8 +6840,8 @@ atmosphere.Parent=lighting;
 local depthoffield=Instance.new("DepthOfFieldEffect");
 depthoffield.Enabled=true;
 depthoffield.FarIntensity=0.3;
-depthoffield.FocusDistance=40;
-depthoffield.InFocusRadius=35;
+depthoffield.FocusDistance=110;
+depthoffield.InFocusRadius=92;
 depthoffield.NearIntensity=0.2;
 depthoffield.Parent=lighting;
 local function add_sparkle_effects()
