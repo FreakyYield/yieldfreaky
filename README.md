@@ -1,2 +1,44 @@
-# yieldfreaky
-In*n*te Yield but not owned by a pedophile
+## Welcome to...
+# 🌀 Freaky YIELD 🍑😈
+
+An **Infinite Yield** paste...  
+but not owned by a **pedo**, and also just **better**.  
+just fucking freaky as fuck
+
+---
+
+## wtf is this?
+
+**Freaky Yield** is a paste of infinite yield
+BUT..... still not owned by a **pedo**... and still **better**...
+
+> ✅ Made by a freak
+
+---
+
+## features that arent in infinite yield
+
+- `;facerape` — facerape
+- `;fly` - fly but fucking better cause iy fly is shit
+## and more (no but soon)
+
+---
+
+## 💻 How 2 Use
+
+- you really dont need a tutorial for that do you..
+
+<!--
+**FreakyYield/freakyyield** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+
+Here are some ideas to get you started:
+
+- 🔭 I’m currently working on ...
+- 🌱 I’m currently learning ...
+- 👯 I’m looking to collaborate on ...
+- 🤔 I’m looking for help with ...
+- 💬 Ask me about ...
+- 📫 How to reach me: ...
+- 😄 Pronouns: ...
+- ⚡ Fun fact: ...
+-->
