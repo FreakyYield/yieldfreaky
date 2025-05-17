@@ -4571,6 +4571,10 @@ CMDs[#CMDs + 1] = {NAME = 'appearanceid / aid [player]', DESC = 'Notifies a play
 CMDs[#CMDs + 1] = {NAME = 'copyappearanceid / caid [player]', DESC = 'Copies a players appearance ID to your clipboard'}
 CMDs[#CMDs + 1] = {NAME = 'bang [player] [speed]', DESC = 'owo'}
 CMDs[#CMDs + 1] = {NAME = 'unbang', DESC = 'uwu'}
+CMDs[#CMDs + 1] = {NAME = 'blowjob / bj', DESC = 'blowjob aaaahhhhh'}
+CMDs[#CMDs + 1] = {NAME = 'strangle / youfuckingbitch / bj', DESC = 'why dont you listen'}
+CMDs[#CMDs + 1] = {NAME = 'getraped / sexualassaulted', DESC = 'get penetrated'}
+CMDs[#CMDs + 1] = {NAME = 'kiss / fuckconsent', DESC = 'kiss that bih'}
 CMDs[#CMDs + 1] = {NAME = 'facerape / campbell [player] [speed]', DESC = 'RAPE THE NIGGA LIKE MY NAME CAMPBELL'}
 CMDs[#CMDs + 1] = {NAME = 'unfacerape / uncampbell', DESC = '(stop )RAPing THE NIGGA LIKE MY NAME not CAMPBELL'}
 CMDs[#CMDs + 1] = {NAME = 'carpet [player]', DESC = 'Be someones carpet'}
@@ -10758,6 +10762,165 @@ addcmd("unbang", {"unrape"}, function(args, speaker)
 	end
 end)
 -- //face
+
+
+addcmd("kiss", {"fuckconsent"}, function(args, speaker)
+	execCmd("unkiss")
+	wait()
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local player = Players.LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:WaitForChild("Humanoid")
+	local animator = humanoid:WaitForChild("Animator")
+	local strangleAnim = Instance.new("Animation")
+	strangleAnim.AnimationId = "rbxassetid://97884303"
+	local strangleTrack = animator:LoadAnimation(strangleAnim)
+	strangleTrack.Looped = true
+	strangleTrack.Priority = Enum.AnimationPriority.Action
+	strangleTrack:Play(0.1, 1, args[2] or 1)
+	local strangleDied
+	strangleDied = humanoid.Died:Connect(function()
+		strangleTrack:Stop()
+		strangleAnim:Destroy()
+		strangleDied:Disconnect()
+		if strangleLoop then strangleLoop:Disconnect() end
+	end)
+	if args[1] then
+		local players = getPlayer(args[1], speaker)
+		for _, v in pairs(players) do
+			local targetName = Players[v].Name
+			local offset = CFrame.new(0, 0, -1.1) * CFrame.Angles(0, math.rad(180), 0)
+
+			strangleLoop = RunService.Stepped:Connect(function()
+				pcall(function()
+					local targetRoot = getTorso(Players[targetName].Character)
+					getRoot(speaker.Character).CFrame = targetRoot.CFrame * offset
+				end)
+			end)
+		end
+	end
+end)
+
+
+addcmd("getraped", {"sexualassaulted"}, function(args, speaker)
+	execCmd("unkiss")
+	wait()
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local player = Players.LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:WaitForChild("Humanoid")
+	local animator = humanoid:WaitForChild("Animator")
+	local strangleAnim = Instance.new("Animation")
+	strangleAnim.AnimationId = "rbxassetid://97884303"
+	local strangleTrack = animator:LoadAnimation(strangleAnim)
+	strangleTrack.Looped = true
+	strangleTrack.Priority = Enum.AnimationPriority.Action
+	strangleTrack:Play(0.1, 1, args[2] or 1)
+	local strangleDied
+	strangleDied = humanoid.Died:Connect(function()
+		strangleTrack:Stop()
+		strangleAnim:Destroy()
+		strangleDied:Disconnect()
+		if strangleLoop then strangleLoop:Disconnect() end
+	end)
+	if args[1] then
+		local players = getPlayer(args[1], speaker)
+		for _, v in pairs(players) do
+			local targetName = Players[v].Name
+			local offset = CFrame.new(0, 0, -1.1) * CFrame.Angles(0, math.rad(180), 0)
+
+			strangleLoop = RunService.Stepped:Connect(function()
+				pcall(function()
+					local targetRoot = getTorso(Players[targetName].Character)
+					getRoot(speaker.Character).CFrame = targetRoot.CFrame * offset
+				end)
+			end)
+		end
+	end
+end)
+
+
+addcmd("strangle", {"youfuckingbitch"}, function(args, speaker)
+	execCmd("unstrangle")
+	wait()
+
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local player = Players.LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:WaitForChild("Humanoid")
+	local animator = humanoid:WaitForChild("Animator")
+
+	-- Create and configure the animation
+	local strangleAnim = Instance.new("Animation")
+	strangleAnim.AnimationId = "rbxassetid://97884303"
+	local strangleTrack = animator:LoadAnimation(strangleAnim)
+	strangleTrack.Looped = true
+	strangleTrack.Priority = Enum.AnimationPriority.Action
+	strangleTrack:Play(0.1, 1, args[2] or 1)
+	local strangleDied
+	strangleDied = humanoid.Died:Connect(function()
+		strangleTrack:Stop()
+		strangleAnim:Destroy()
+		strangleDied:Disconnect()
+		if strangleLoop then strangleLoop:Disconnect() end
+	end)
+	if args[1] then
+		local players = getPlayer(args[1], speaker)
+		for _, v in pairs(players) do
+			local targetName = Players[v].Name
+			local offset = CFrame.new(0, -0.8, -1.5) * CFrame.Angles(0, math.rad(180), 0)
+
+			strangleLoop = RunService.Stepped:Connect(function()
+				pcall(function()
+					local targetRoot = getTorso(Players[targetName].Character)
+					getRoot(speaker.Character).CFrame = targetRoot.CFrame * offset
+				end)
+			end)
+		end
+	end
+end)
+
+addcmd("blowjob",{"bj"},function(args, speaker)
+	execCmd("unbj")
+	wait()
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local player = Players.LocalPlayer
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:WaitForChild("Humanoid")
+	local animator = humanoid:WaitForChild("Animator")
+	local strangleAnim = Instance.new("Animation")
+	strangleAnim.AnimationId = "rbxassetid://97884303"
+	local strangleTrack = animator:LoadAnimation(strangleAnim)
+	strangleTrack.Looped = true
+	strangleTrack.Priority = Enum.AnimationPriority.Action
+	strangleTrack:Play(0.1, 1, args[2] or 1)
+	local strangleDied
+	strangleDied = humanoid.Died:Connect(function()
+		strangleTrack:Stop()
+		strangleAnim:Destroy()
+		strangleDied:Disconnect()
+		if strangleLoop then strangleLoop:Disconnect() end
+	end)
+	if args[1] then
+		local players = getPlayer(args[1], speaker)
+		for _, v in pairs(players) do
+			local targetName = Players[v].Name
+			local offset = CFrame.new(0, -1.8, -1.5) * CFrame.Angles(0, math.rad(180), 0)
+
+			strangleLoop = RunService.Stepped:Connect(function()
+				pcall(function()
+					local targetRoot = getTorso(Players[targetName].Character)
+					getRoot(speaker.Character).CFrame = targetRoot.CFrame * offset
+				end)
+			end)
+		end
+	end
+end)
+
 
 addcmd("facerape", {"campbell"}, function(args, speaker)
 	execCmd("unfacerape")
