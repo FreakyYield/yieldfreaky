@@ -4612,6 +4612,7 @@ CMDs[#CMDs + 1] = {NAME = 'unflyfling', DESC = 'Disables the flyfling command'}
 CMDs[#CMDs + 1] = {NAME = 'walkfling', DESC = 'Basically fling but no spinning'}
 CMDs[#CMDs + 1] = {NAME = 'unwalkfling / nowalkfling', DESC = 'Disables walkfling'}
 CMDs[#CMDs + 1] = {NAME = 'invisfling', DESC = 'Enables invisible fling'}
+CMDs[#CMDs + 1] = {NAME = 'invisible', DESC = 'become invisible'}
 CMDs[#CMDs + 1] = {NAME = 'antifling', DESC = 'Disables player collisions to prevent you from being flung'}
 CMDs[#CMDs + 1] = {NAME = 'unantifling', DESC = 'Disables antifling'}
 CMDs[#CMDs + 1] = {NAME = 'loopoof', DESC = 'Loops everyones character sounds (everyone can hear)'}
@@ -4626,7 +4627,6 @@ CMDs[#CMDs + 1] = {NAME = 'respawn', DESC = 'Respawns you'}
 CMDs[#CMDs + 1] = {NAME = 'refresh / re', DESC = 'Respawns and brings you back to the same position'}
 CMDs[#CMDs + 1] = {NAME = 'god', DESC = 'Makes your character difficult to kill in most games'}
 CMDs[#CMDs + 1] = {NAME = 'permadeath', DESC = 'Makes you unable to die'}
-CMDs[#CMDs + 1] = {NAME = 'invisible / invis', DESC = 'Makes you invisible to other players'}
 CMDs[#CMDs + 1] = {NAME = 'visible / vis', DESC = 'Makes you visible to other players'}
 CMDs[#CMDs + 1] = {NAME = 'toolinvisible / toolinvis / tinvis', DESC = 'Makes you invisible to other players and able to use tools'}
 CMDs[#CMDs + 1] = {NAME = 'speed / ws / walkspeed [num]', DESC = 'Change your walkspeed'}
@@ -9425,131 +9425,8 @@ addcmd('god',{},function(args, speaker)
 	nHuman.Health = nHuman.MaxHealth
 end)
 
-invisRunning = false
-addcmd('invisible',{'invis'},function(args, speaker)
-	if invisRunning then return end
-	invisRunning = true
-	permadeath(speaker)
-	-- Full credit to AmokahFox @V3rmillion
-	local Player = speaker
-	repeat wait(.1) until Player.Character
-	local Character = Player.Character
-	Character.Archivable = true
-	local IsInvis = false
-	local IsRunning = true
-	local InvisibleCharacter = Character:Clone()
-	InvisibleCharacter.Parent = Lighting
-	local Void = workspace.FallenPartsDestroyHeight
-	InvisibleCharacter.Name = ""
-	local CF
-
-	local invisFix = RunService.Stepped:Connect(function()
-		pcall(function()
-			local IsInteger
-			if tostring(Void):find'-' then
-				IsInteger = true
-			else
-				IsInteger = false
-			end
-			local Pos = Player.Character.HumanoidRootPart.Position
-			local Pos_String = tostring(Pos)
-			local Pos_Seperate = Pos_String:split(', ')
-			local X = tonumber(Pos_Seperate[1])
-			local Y = tonumber(Pos_Seperate[2])
-			local Z = tonumber(Pos_Seperate[3])
-			if IsInteger == true then
-				if Y <= Void then
-					Respawn()
-				end
-			elseif IsInteger == false then
-				if Y >= Void then
-					Respawn()
-				end
-			end
-		end)
-	end)
-
-	for i,v in pairs(InvisibleCharacter:GetDescendants())do
-		if v:IsA("BasePart") then
-			if v.Name == "HumanoidRootPart" then
-				v.Transparency = 1
-			else
-				v.Transparency = .5
-			end
-		end
-	end
-
-	function Respawn()
-		IsRunning = false
-		if IsInvis == true then
-			pcall(function()
-				Player.Character = Character
-				wait()
-				Character.Parent = workspace
-				Character:FindFirstChildWhichIsA'Humanoid':Destroy()
-				IsInvis = false
-				InvisibleCharacter.Parent = nil
-				invisRunning = false
-			end)
-		elseif IsInvis == false then
-			pcall(function()
-				Player.Character = Character
-				wait()
-				Character.Parent = workspace
-				Character:FindFirstChildWhichIsA'Humanoid':Destroy()
-				TurnVisible()
-			end)
-		end
-	end
-
-	local invisDied
-	invisDied = InvisibleCharacter:FindFirstChildOfClass'Humanoid'.Died:Connect(function()
-		Respawn()
-		invisDied:Disconnect()
-	end)
-
-	if IsInvis == true then return end
-	IsInvis = true
-	CF = workspace.CurrentCamera.CFrame
-	local CF_1 = Player.Character.HumanoidRootPart.CFrame
-	Character:MoveTo(Vector3.new(0,math.pi*1000000,0))
-	workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-	wait(.2)
-	workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-	InvisibleCharacter = InvisibleCharacter
-	Character.Parent = Lighting
-	InvisibleCharacter.Parent = workspace
-	InvisibleCharacter.HumanoidRootPart.CFrame = CF_1
-	Player.Character = InvisibleCharacter
-	execCmd('fixcam')
-	Player.Character.Animate.Disabled = true
-	Player.Character.Animate.Disabled = false
-
-	function TurnVisible()
-		if IsInvis == false then return end
-		invisFix:Disconnect()
-		invisDied:Disconnect()
-		CF = workspace.CurrentCamera.CFrame
-		Character = Character
-		local CF_1 = Player.Character.HumanoidRootPart.CFrame
-		Character.HumanoidRootPart.CFrame = CF_1
-		InvisibleCharacter:Destroy()
-		Player.Character = Character
-		Character.Parent = workspace
-		IsInvis = false
-		Player.Character.Animate.Disabled = true
-		Player.Character.Animate.Disabled = false
-		invisDied = Character:FindFirstChildOfClass'Humanoid'.Died:Connect(function()
-			Respawn()
-			invisDied:Disconnect()
-		end)
-		invisRunning = false
-	end
-	notify('Invisible','You now appear invisible to other players')
-end)
-
 addcmd("visible", {"vis","uninvisible"}, function(args, speaker)
-	TurnVisible()
+	speaker.Character.Humanoid:TakeDamage(9e9); --type shit
 end)
 
 addcmd("toggleinvis", {}, function(args, speaker)
@@ -12143,6 +12020,65 @@ addcmd('invisfling',{},function(args, speaker)
 	bambam.Force = Vector3.new(99999,99999*10,99999)
 	bambam.Location = getRoot(speaker.Character).Position
 end)
+
+addcmd('invisible',{},function(args, speaker)
+local height = 3
+local cloneref = cloneref or function(o) return o end
+if height > 4 then
+    height = 4
+end
+local lp = game.Players.LocalPlayer
+local c = lp.Character or lp.CharacterAdded:Wait()
+local hrp0 = c:FindFirstChild("HumanoidRootPart")
+local hrp1 = hrp0:Clone()
+local part = Instance.new("Part")
+part.Size = Vector3.new(0.5, 0.5, 0.5)
+part.Anchored = true
+part.CanCollide = false
+part.Transparency = 1
+part.BrickColor = BrickColor.new("Bright blue")
+part.Parent = workspace
+c.Parent = nil
+hrp0.Parent = hrp1
+hrp0.RootJoint.Part0 = nil
+hrp1.Parent = c
+c.Parent = workspace
+local animId = "rbxassetid://215384594"
+local anim = Instance.new("Animation")
+anim.AnimationId = animId
+local humanoid = c:WaitForChild("Humanoid")
+local animTrack = humanoid:LoadAnimation(anim)
+local h = game:GetService("RunService").Heartbeat
+for _, v in pairs(c:GetDescendants()) do
+    if v:IsA("BasePart") then
+        v.Transparency = 1
+    elseif v:IsA("Decal") then
+        v.Transparency = 1
+    end
+end
+for _, v in pairs(c:GetChildren()) do
+    if v:IsA("Accessory") then
+        for _, p in pairs(v:GetDescendants()) do
+            if p:IsA("BasePart") then
+                p.Transparency = 1
+            end
+        end
+    end
+end
+while h:Wait() and c and c.Parent do
+    humanoid.HipHeight = height
+    humanoid.JumpPower = 20
+    animTrack:Play()
+    animTrack:AdjustSpeed(0)
+    animTrack.TimePosition = 0.4
+    hrp0.CFrame = hrp1.CFrame 
+    hrp0.Orientation = Vector3.new(90, 0, 0)
+    hrp0.Position = hrp1.Position - Vector3.new(0, hrp0.Size.Y / 2, 0) 
+    hrp0.Velocity = hrp1.Velocity
+    part.Position = hrp0.Position + Vector3.new(-0.05, 0, 2.45)
+end
+end)
+
 
 addcmd("antifling", {}, function(args, speaker)
     if antifling then
