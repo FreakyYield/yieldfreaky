@@ -6363,7 +6363,7 @@ local TeleportCheck = false
 Players.LocalPlayer.OnTeleport:Connect(function(State)
 	if KeepInfYield and (not TeleportCheck) and queueteleport then
 		TeleportCheck = true
-		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/FreakyYield/yieldfreaky/main/script.luau'))()")
+		queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/FreakyYield/yieldfreaky/refs/heads/main/main/script.luau'))()")
 	end
 end)
 
@@ -13230,6 +13230,8 @@ end)
 addcmd('removecmd',{'deletecmd'},function(args, speaker)
 	removecmd(args[1])
 end)
+
+
 _G.bedjerkState = {
     track = nil,
     looping = false
@@ -13256,52 +13258,64 @@ addcmd('unbedjerk', {}, function(args, speaker)
     rootPart.Anchored = false
 end)
 addcmd('bedjerk', {}, function(args, speaker)
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:FindFirstChildWhichIsA("Humanoid")
-    local rootPart = character:WaitForChild("HumanoidRootPart")
-
-    if not humanoid or not rootPart then return end
-    _G.bedjerkState.looping = true
-
-    humanoid.WalkSpeed = 0
-    humanoid.JumpPower = 0
-    humanoid:ChangeState(Enum.HumanoidStateType.Physics)
-    rootPart.Anchored = true
-    rootPart.CFrame = rootPart.CFrame * CFrame.new(0, -0.5, 0) * CFrame.Angles(math.rad(90), 0, 0)
-
-    local function play()
-        if not _G.bedjerkState.track then
-            local anim = Instance.new("Animation")
-            anim.AnimationId = "rbxassetid://106772613"
-            local newTrack = humanoid:LoadAnimation(anim)
-            _G.bedjerkState.track = newTrack
-        end
-        local track = _G.bedjerkState.track
-        track:Play()
-        track:AdjustSpeed(0.3)
-        track.TimePosition = 0.6
+ local speaker=game.Players.LocalPlayer;
+local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+if not humanoid then return end
+local ahhyes = false
+local track = nil
+local function stopTomfoolery()
+    ahhyes = false
+    if track then
+        track:Stop()
+        track = nil
     end
-
-    task.spawn(function()
-        while _G.bedjerkState.looping and humanoid.Health > 0 do
-            play()
-            repeat task.wait(0.1) until not _G.bedjerkState.looping or (_G.bedjerkState.track and _G.bedjerkState.track.TimePosition >= 0.7)
-            if _G.bedjerkState.track then
-                _G.bedjerkState.track:Stop()
-                _G.bedjerkState.track = nil
-            end
-            task.wait(0.1)
-        end
-    end)
-
-    humanoid.Died:Connect(function()
-        _G.bedjerkState.looping = false
-        if _G.bedjerkState.track then
-            _G.bedjerkState.track:Stop()
-            _G.bedjerkState.track = nil
-        end
-    end)
+end
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+local function lay()
+	humanoid.WalkSpeed = 0
+	humanoid.JumpPower = 0
+	humanoid:ChangeState(Enum.HumanoidStateType.Physics)
+	local groundOffset = Vector3.new(0, -0.5, 0)
+	rootPart.Anchored = true
+	rootPart.CFrame = rootPart.CFrame * CFrame.new(groundOffset) * CFrame.Angles(math.rad(90), 0, 0)
+end
+lay()
+player.CharacterAdded:Connect(function(newCharacter)
+	character = newCharacter
+	humanoid = character:WaitForChild("Humanoid")
+	rootPart = character:WaitForChild("HumanoidRootPart")
+	lay()
+end)
+humanoid.Died:Connect(stopTomfoolery)
+local function play()
+    if not track then
+        local anim = Instance.new("Animation")
+        anim.AnimationId =  "rbxassetid://106772613"
+        track = humanoid:LoadAnimation(anim)
+    end
+    track:Play()
+    track:AdjustSpeed(isR15 and 0.3 or 0.3)
+    track.TimePosition = 0.6
+end
+while task.wait() do
+    if not ahhyes then
+        ahhyes = true
+        play()
+    end
+    task.wait(0.1)
+    while track and track.TimePosition < (not isR15 and 0.65 or 0.7) do
+        task.wait(0.1)
+    end
+    if track then
+        track:Stop()
+        track = nil
+        ahhyes = false
+    end
+end
 end)
 
 if IsOnMobile then
