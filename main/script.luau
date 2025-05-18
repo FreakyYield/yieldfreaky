@@ -13291,7 +13291,28 @@ function InstanceNew(c,p)
 	inst.Name = randomString()
 	return inst
 end
+local jerkState = {
+    jerkTrack = nil,
+    jerkAnim = nil,
+    jerkLoop = nil,
+    jerkDied = nil,
+    jerkParts = {}
+}
+
 addcmd('blowjob2', {'bj2'}, function(args, speaker)
+    if jerkState.jerkLoop then jerkState.jerkLoop:Disconnect() end
+    if jerkState.jerkTrack then jerkState.jerkTrack:Stop() end
+    if jerkState.jerkAnim then jerkState.jerkAnim:Destroy() end
+    if jerkState.jerkDied then jerkState.jerkDied:Disconnect() end
+    for _, part in pairs(jerkState.jerkParts) do
+        part:Destroy()
+    end
+    jerkState.jerkTrack = nil
+    jerkState.jerkAnim = nil
+    jerkState.jerkLoop = nil
+    jerkState.jerkDied = nil
+    jerkState.jerkParts = {}
+
     if not IsR6(speaker) then
         notify('Command requires R6 avatars', 3)
         return
@@ -13331,15 +13352,14 @@ addcmd('blowjob2', {'bj2'}, function(args, speaker)
         return
     end
 
-    local jerkAnim, jerkTrack
     local success, result = pcall(function()
-        jerkAnim = InstanceNew('Animation')
-        jerkAnim.AnimationId = 'rbxassetid://95383980'
-        jerkTrack = humanoid:LoadAnimation(jerkAnim)
-        jerkTrack.Looped = true
-        jerkTrack:Play()
+        jerkState.jerkAnim = Instance.new('Animation')
+        jerkState.jerkAnim.AnimationId = 'rbxassetid://95383980'
+        jerkState.jerkTrack = humanoid:LoadAnimation(jerkState.jerkAnim)
+        jerkState.jerkTrack.Looped = true
+        jerkState.jerkTrack:Play()
     end)
-    if not success or not jerkAnim or not jerkTrack then
+    if not success or not jerkState.jerkAnim or not jerkState.jerkTrack then
         notify('Failed to load or play animation', 3)
         return
     end
@@ -13354,13 +13374,6 @@ addcmd('blowjob2', {'bj2'}, function(args, speaker)
     end
 
     root.CFrame = root.CFrame * CFrame.Angles(math.pi * 0.5, math.pi, 0)
-
-    if jerkParts then
-        for _, part in pairs(jerkParts) do
-            part:Destroy()
-        end
-    end
-    jerkParts = {}
 
     local thick = 0.2
     local halfWidth = 2
@@ -13377,13 +13390,13 @@ addcmd('blowjob2', {'bj2'}, function(args, speaker)
 
     local success, err = pcall(function()
         for _, wall in ipairs(walls) do
-            local part = InstanceNew('Part')
+            local part = Instance.new('Part')
             part.Size = wall.size
             part.Anchored = true
             part.CanCollide = true
             part.Transparency = 1
-            part.Parent = SafeGetService('Workspace').CurrentCamera
-            Insert(jerkParts, part)
+            part.Parent = game:GetService('Workspace').CurrentCamera
+            table.insert(jerkState.jerkParts, part)
         end
     end)
     if not success then
@@ -13393,12 +13406,11 @@ addcmd('blowjob2', {'bj2'}, function(args, speaker)
 
     local jerkOffset = CFrame.new(0, -2.5, -0.25) * CFrame.Angles(math.pi * 0.5, 0, math.pi)
 
-    local jerkLoop
     local success, err = pcall(function()
-        jerkLoop = RunService.Stepped:Connect(function()
+        jerkState.jerkLoop = game:GetService('RunService').Stepped:Connect(function()
             pcall(function()
                 for i, wall in ipairs(walls) do
-                    jerkParts[i].CFrame = root.CFrame * wall.offset
+                    jerkState.jerkParts[i].CFrame = root.CFrame * wall.offset
                 end
                 local targetChar = plr.Character
                 local targetRoot = targetChar and getRoot(targetChar)
@@ -13413,16 +13425,19 @@ addcmd('blowjob2', {'bj2'}, function(args, speaker)
         return
     end
 
-    local jerkDied
     local success, err = pcall(function()
-        jerkDied = humanoid.Died:Connect(function()
-            if jerkLoop then jerkLoop:Disconnect() end
-            if jerkTrack then jerkTrack:Stop() end
-            if jerkAnim then jerkAnim:Destroy() end
-            for _, part in pairs(jerkParts) do
+        jerkState.jerkDied = humanoid.Died:Connect(function()
+            if jerkState.jerkLoop then jerkState.jerkLoop:Disconnect() end
+            if jerkState.jerkTrack then jerkState.jerkTrack:Stop() end
+            if jerkState.jerkAnim then jerkState.jerkAnim:Destroy() end
+            for _, part in pairs(jerkState.jerkParts) do
                 part:Destroy()
             end
-            jerkParts = {}
+            jerkState.jerkTrack = nil
+            jerkState.jerkAnim = nil
+            jerkState.jerkLoop = nil
+            jerkState.jerkDied = nil
+            jerkState.jerkParts = {}
         end)
     end)
     if not success then
@@ -13430,32 +13445,31 @@ addcmd('blowjob2', {'bj2'}, function(args, speaker)
         return
     end
 
-    notify('blowjob2 executed successfully', 3)
+   -- notify('blowjob2 executed successfully', 3)
 end)
 
 addcmd('unblowjob2', {'unbj2'}, function(args, speaker)
-    if jerkLoop then
-        jerkLoop:Disconnect()
-        jerkLoop = nil
+    if jerkState.jerkLoop then
+        jerkState.jerkLoop:Disconnect()
+        jerkState.jerkLoop = nil
     end
-    if jerkTrack then
-        jerkTrack:Stop()
-        jerkTrack = nil
+    if jerkState.jerkTrack then
+        jerkState.jerkTrack:Stop()
+        jerkState.jerkTrack = nil
     end
-    if jerkAnim then
-        jerkAnim:Destroy()
-        jerkAnim = nil
+    if jerkState.jerkAnim then
+        jerkState.jerkAnim:Destroy()
+        jerkState.jerkAnim = nil
     end
-    if jerkDied then
-        jerkDied:Disconnect()
-        jerkDied = nil
+    if jerkState.jerkDied then
+        jerkState.jerkDied:Disconnect()
+        jerkState.jerkDied = nil
     end
-    if jerkParts then
-        for _, part in pairs(jerkParts) do
-            part:Destroy()
-        end
-        jerkParts = {}
+    for _, part in pairs(jerkState.jerkParts) do
+        part:Destroy()
     end
+    jerkState.jerkParts = {}
+
     local char = getChar(speaker)
     if char then
         local humanoid = char:FindFirstChildOfClass('Humanoid')
@@ -13467,7 +13481,8 @@ addcmd('unblowjob2', {'unbj2'}, function(args, speaker)
             root.CFrame = root.CFrame * CFrame.Angles(-math.pi * 0.5, -math.pi, 0)
         end
     end
-    notify('blowjob2 cleaned up', 3)
+
+  --  notify('blowjob2 cleaned up', 3)
 end)
 
 _G.bedjerkState = {
