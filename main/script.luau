@@ -4572,6 +4572,8 @@ CMDs[#CMDs + 1] = {NAME = 'copyappearanceid / caid [player]', DESC = 'Copies a p
 CMDs[#CMDs + 1] = {NAME = 'bang [player] [speed]', DESC = 'owo'}
 CMDs[#CMDs + 1] = {NAME = 'unbang', DESC = 'uwu'}
 CMDs[#CMDs + 1] = {NAME = 'blowjob / bj', DESC = 'blowjob aaaahhhhh'}
+CMDs[#CMDs + 1] = {NAME = 'blowjob2 / bj2', DESC = 'blowjob2 aaaahhhhh'}
+CMDs[#CMDs + 1] = {NAME = 'unblowjob2 / unbj2', DESC = 'unblowjob2 aaaahhhhh'}
 CMDs[#CMDs + 1] = {NAME = 'strangle / youfuckingbitch', DESC = 'why dont you listen'}
 CMDs[#CMDs + 1] = {NAME = 'getraped / sexualassaulted', DESC = 'get penetrated'}
 CMDs[#CMDs + 1] = {NAME = 'kiss / fuckconsent', DESC = 'kiss that bih'}
@@ -13231,6 +13233,242 @@ addcmd('removecmd',{'deletecmd'},function(args, speaker)
 	removecmd(args[1])
 end)
 
+function getPlr(str)
+    if str == 'me' then
+        return {Players.LocalPlayer}
+    elseif str == 'all' then
+        return Players:GetPlayers()
+    elseif str == 'others' then
+        local plrs = Players:GetPlayers()
+        local t = {}
+        for i, v in pairs(plrs) do
+            if v ~= Players.LocalPlayer then
+                table.insert(t, v)
+            end
+        end
+        return t
+    elseif str == 'random' then
+        local plrs = Players:GetPlayers()
+        return {plrs[math.random(1, #plrs)]}
+    else
+        local plrs = Players:GetPlayers()
+        local t = {}
+        str = str:lower()
+        for i, v in pairs(plrs) do
+            if v.Name:lower():find(str) or v.DisplayName:lower():find(str) then
+                table.insert(t, v)
+            end
+        end
+        return t
+    end
+end
+local function SafeGetService(name)
+	local service = game:GetService(name)
+	local zeNAService = (cloneref and cloneref(service)) or service
+	return zeNAService
+end
+
+local Insert = table.insert;
+function IsR6(plr)
+	plr=(plr or Players.LocalPlayer)
+	if plr then
+		if getPlrHum(plr).RigType==Enum.HumanoidRigType.R6 then
+			return true
+		end
+	end
+	return false
+end
+function getChar(plr)
+    return plr.Character
+end
+function getPlrHum(plr)
+	local char = getChar(plr)
+	return char and char:FindFirstChildWhichIsA("Humanoid") or nil
+end
+function InstanceNew(c,p)
+	local inst = Instance.new(c)
+	if p then inst.Parent=p end
+	inst.Name = randomString()
+	return inst
+end
+addcmd('blowjob2', {'bj2'}, function(args, speaker)
+    if not IsR6(speaker) then
+        notify('Command requires R6 avatars', 3)
+        return
+    end
+
+    local username = args[1] or speaker.Name
+    local players
+    local success, err = pcall(function()
+        players = getPlr(username)
+    end)
+    if not success or not players or type(players) ~= 'table' or #players == 0 then
+        notify('No player found with name: ' .. tostring(username), 3)
+        return
+    end
+    local plr = players[1]
+
+    local char
+    local success, err = pcall(function()
+        char = getChar(speaker)
+        if not char then
+            local timeout = 5
+            local start = tick()
+            while not speaker.Character and tick() - start < timeout do
+                wait(0.1)
+            end
+            char = speaker.Character
+        end
+    end)
+    if not success or not char then
+        notify('Speaker character not found', 3)
+        return
+    end
+
+    local humanoid = char:FindFirstChildOfClass('Humanoid')
+    if not humanoid then
+        notify('Speaker humanoid not found', 3)
+        return
+    end
+
+    local jerkAnim, jerkTrack
+    local success, result = pcall(function()
+        jerkAnim = InstanceNew('Animation')
+        jerkAnim.AnimationId = 'rbxassetid://95383980'
+        jerkTrack = humanoid:LoadAnimation(jerkAnim)
+        jerkTrack.Looped = true
+        jerkTrack:Play()
+    end)
+    if not success or not jerkAnim or not jerkTrack then
+        notify('Failed to load or play animation', 3)
+        return
+    end
+
+    humanoid.Sit = true
+    wait(0.1)
+
+    local root = getRoot(char)
+    if not root then
+        notify('Speaker root part not found', 3)
+        return
+    end
+
+    root.CFrame = root.CFrame * CFrame.Angles(math.pi * 0.5, math.pi, 0)
+
+    if jerkParts then
+        for _, part in pairs(jerkParts) do
+            part:Destroy()
+        end
+    end
+    jerkParts = {}
+
+    local thick = 0.2
+    local halfWidth = 2
+    local halfDepth = 2
+    local halfHeight = 3
+    local walls = {
+        {offset = CFrame.new(0, 0, halfDepth + thick / 500), size = Vector3.new(4, 6, thick)},
+        {offset = CFrame.new(0, 0, -(halfDepth + thick / 500)), size = Vector3.new(4, 6, thick)},
+        {offset = CFrame.new(halfWidth + thick / 500, 0, 0), size = Vector3.new(thick, 6, 4)},
+        {offset = CFrame.new(-(halfWidth + thick / 500), 0, 0), size = Vector3.new(thick, 6, 4)},
+        {offset = CFrame.new(0, halfHeight + thick / 500, 0), size = Vector3.new(4, thick, 4)},
+        {offset = CFrame.new(0, -(halfHeight + thick / 500), 0), size = Vector3.new(4, thick, 4)}
+    }
+
+    local success, err = pcall(function()
+        for _, wall in ipairs(walls) do
+            local part = InstanceNew('Part')
+            part.Size = wall.size
+            part.Anchored = true
+            part.CanCollide = true
+            part.Transparency = 1
+            part.Parent = SafeGetService('Workspace').CurrentCamera
+            Insert(jerkParts, part)
+        end
+    end)
+    if not success then
+        notify('Failed to create wall parts', 3)
+        return
+    end
+
+    local jerkOffset = CFrame.new(0, -2.5, -0.25) * CFrame.Angles(math.pi * 0.5, 0, math.pi)
+
+    local jerkLoop
+    local success, err = pcall(function()
+        jerkLoop = RunService.Stepped:Connect(function()
+            pcall(function()
+                for i, wall in ipairs(walls) do
+                    jerkParts[i].CFrame = root.CFrame * wall.offset
+                end
+                local targetChar = plr.Character
+                local targetRoot = targetChar and getRoot(targetChar)
+                if targetRoot then
+                    root.CFrame = targetRoot.CFrame * jerkOffset
+                end
+            end)
+        end)
+    end)
+    if not success then
+        notify('Failed to start jerk loop', 3)
+        return
+    end
+
+    local jerkDied
+    local success, err = pcall(function()
+        jerkDied = humanoid.Died:Connect(function()
+            if jerkLoop then jerkLoop:Disconnect() end
+            if jerkTrack then jerkTrack:Stop() end
+            if jerkAnim then jerkAnim:Destroy() end
+            for _, part in pairs(jerkParts) do
+                part:Destroy()
+            end
+            jerkParts = {}
+        end)
+    end)
+    if not success then
+        notify('Failed to set up death cleanup', 3)
+        return
+    end
+
+    notify('blowjob2 executed successfully', 3)
+end)
+
+addcmd('unblowjob2', {'unbj2'}, function(args, speaker)
+    if jerkLoop then
+        jerkLoop:Disconnect()
+        jerkLoop = nil
+    end
+    if jerkTrack then
+        jerkTrack:Stop()
+        jerkTrack = nil
+    end
+    if jerkAnim then
+        jerkAnim:Destroy()
+        jerkAnim = nil
+    end
+    if jerkDied then
+        jerkDied:Disconnect()
+        jerkDied = nil
+    end
+    if jerkParts then
+        for _, part in pairs(jerkParts) do
+            part:Destroy()
+        end
+        jerkParts = {}
+    end
+    local char = getChar(speaker)
+    if char then
+        local humanoid = char:FindFirstChildOfClass('Humanoid')
+        if humanoid then
+            humanoid.Sit = false
+        end
+        local root = getRoot(char)
+        if root then
+            root.CFrame = root.CFrame * CFrame.Angles(-math.pi * 0.5, -math.pi, 0)
+        end
+    end
+    notify('blowjob2 cleaned up', 3)
+end)
 
 _G.bedjerkState = {
     track = nil,
