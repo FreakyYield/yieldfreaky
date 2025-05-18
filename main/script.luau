@@ -6801,106 +6801,84 @@ addcmd('gametp',{'gameteleport'},function(args, speaker)
 end)
 
 addcmd('shaders',{'lag'},function(args, speaker)
-local lighting=game:GetService("Lighting");
-local runservice=game:GetService("RunService");
-local tweenservice=game:GetService("TweenService");
-local debris=game:GetService("Debris");
+--not made by freaky yield dev, made by https://scriptblox.com/script/Universal-Script-Shaders-open-source-32160
+local Lighting = game:GetService("Lighting")
+local RunService = game:GetService("RunService")
+local MaterialService = game:GetService("MaterialService")
+local function forceDaytime()
+    Lighting.ClockTime = 12
+    Lighting.GeographicLatitude = 0
+end
+RunService.Heartbeat:Connect(function()
+    forceDaytime()
+end)
 Lighting.GlobalShadows = true
-local function apply_rtx_shader()
-settings().Rendering.QualityLevel=Enum.QualityLevel.Level21;
-settings().Rendering.EnableFRM=true;
-settings().Rendering.GraphicsMode=Enum.GraphicsMode.OpenGL;
-lighting.GlobalShadows=true;
-lighting.Brightness=3.5;
-lighting.Ambient=Color3.fromRGB(15,15,25);
-lighting.OutdoorAmbient=Color3.fromRGB(50,50,70);
-lighting.ShadowSoftness=0.6;
-lighting.ClockTime=12;
-lighting.GeographicLatitude=30;
-lighting.EnvironmentDiffuseScale=0.8;
-lighting.EnvironmentSpecularScale=1.0;
-lighting.ExposureCompensation=0.5;
-local bloom=Instance.new("BloomEffect");
-bloom.Intensity=2.0;
-bloom.Size=48;
-bloom.Threshold=0.75;
-bloom.Parent=lighting;
-local colorcorrection=Instance.new("ColorCorrectionEffect");
-colorcorrection.Brightness=0.3;
-colorcorrection.Contrast=0.5;
-colorcorrection.Saturation=0.8;
-colorcorrection.TintColor=Color3.fromRGB(255,225,200);
-colorcorrection.Parent=lighting;
-local sunrays=Instance.new("SunRaysEffect");
-sunrays.Intensity=0.3;
-sunrays.Spread=1.0;
-sunrays.Parent=lighting;
-local atmosphere=Instance.new("Atmosphere");
-atmosphere.Density=0.2;
-atmosphere.Offset=0.7;
-atmosphere.Color=Color3.fromRGB(230,200,170);
-atmosphere.Decay=Color3.fromRGB(210,180,150);
-atmosphere.Glare=0.8;
-atmosphere.Haze=0.6;
-atmosphere.Parent=lighting;
-local depthoffield=Instance.new("DepthOfFieldEffect");
-depthoffield.Enabled=true;
-depthoffield.FarIntensity=0.3;
-depthoffield.FocusDistance=110;
-depthoffield.InFocusRadius=92;
-depthoffield.NearIntensity=0.2;
-depthoffield.Parent=lighting;
-local function add_sparkle_effects()
-local sparklepart=Instance.new("Part");
-sparklepart.Anchored=true;
-sparklepart.CanCollide=false;
-sparklepart.Transparency=1;
-sparklepart.Size=Vector3.new(0.1,0.1,0.1);
-sparklepart.Position=Vector3.new(0,100,0);
-sparklepart.Parent=workspace;
-local sparkles=Instance.new("Sparkles");
-sparkles.SparkleColor=Color3.fromRGB(255,240,200);
-sparkles.TimeScale=0.5;
-sparkles.Parent=sparklepart;
-debris:AddItem(sparklepart,10);
+Lighting.ShadowSoftness = 0.3
+Lighting.Brightness = 3
+Lighting.OutdoorAmbient = Color3.new(0.8, 0.8, 0.8)
+Lighting.Ambient = Color3.new(0.6, 0.6, 0.6)
+Lighting.Technology = Enum.Technology.ShadowMap 
+local sunRays = Instance.new("SunRaysEffect")
+sunRays.Parent = Lighting
+sunRays.Intensity = 0.2
+sunRays.Spread = 0.5
+local bloom = Instance.new("BloomEffect")
+bloom.Parent = Lighting
+bloom.Intensity = 0.3 
+bloom.Size = 10
+local atmosphere = Instance.new("Atmosphere")
+atmosphere.Parent = Lighting
+atmosphere.Density = 0.1
+atmosphere.Offset = 0.5
+atmosphere.Color = Color3.new(0.9, 0.9, 0.9)
+atmosphere.Decay = Color3.new(0.9, 0.9, 0.9)
+atmosphere.Glare = 0
+atmosphere.Haze = 0
+local colorCorrection = Instance.new("ColorCorrectionEffect")
+colorCorrection.Parent = Lighting
+colorCorrection.Saturation = -0.1
+colorCorrection.Contrast = 0.1
+local blur = Instance.new("BlurEffect")
+blur.Parent = Lighting
+blur.Size = 1
+local function disableReflections(part)
+    if part:IsA("BasePart") then
+        part.Reflectance = 0
+    end
 end
-spawn(function()
-while true do
-add_sparkle_effects();
-wait(2);
+for _, part in ipairs(workspace:GetDescendants()) do
+    disableReflections(part)
 end
-end);
-if lighting:FindFirstChild("Sky")then
-lighting.Sky:Destroy();
+workspace.DescendantAdded:Connect(function(part)
+    disableReflections(part)
+end)
+local function makeGlassClear(part)
+    if part:IsA("BasePart") and part.Material == Enum.Material.Glass then
+        part.Transparency = 1
+        part.Reflectance = 0
+    end
 end
-local sky=Instance.new("Sky");
-sky.SkyboxBk="rbxassetid://10128908836";
-sky.SkyboxDn="rbxassetid://10128909036";
-sky.SkyboxFt="rbxassetid://10128909229";
-sky.SkyboxLf="rbxassetid://10128909436";
-sky.SkyboxRt="rbxassetid://10128909626";
-sky.SkyboxUp="rbxassetid://10128909825";
-sky.CelestialBodiesShown=true;
-sky.SunAngularSize=25;
-sky.MoonAngularSize=20;
-sky.StarCount=10000;
-sky.Parent=lighting;
-local function update_lighting()
-local time=tick();
-local bloomtween=tweenservice:Create(bloom,TweenInfo.new(0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Intensity=2.0+math.sin(time*0.3)*0.3});
-local colortween=tweenservice:Create(colorcorrection,TweenInfo.new(0.8,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Brightness=0.3+math.cos(time*0.2)*0.15,Saturation=0.8+math.sin(time*0.15)*0.2});
-local atmtween=tweenservice:Create(atmosphere,TweenInfo.new(1,Enum.EasingStyle.Sine,Enum.EasingDirection.InOut),{Density=0.2+math.cos(time*0.1)*0.05});
-bloomtween:Play();
-colortween:Play();
-atmtween:Play();
-lighting.ClockTime=18+math.sin(time*0.03)*0.3;
+for _, part in ipairs(workspace:GetDescendants()) do
+    makeGlassClear(part)
 end
-runservice.RenderStepped:Connect(update_lighting);
+workspace.DescendantAdded:Connect(function(part)
+    makeGlassClear(part)
+end)
+local function onDevicePerformance(performance)
+    if performance == "low" then
+        bloom.Enabled = false
+        blur.Enabled = false
+        sunRays.Enabled = false
+        Lighting.GlobalShadows = false
+    else
+        bloom.Enabled = true
+        blur.Enabled = true
+        sunRays.Enabled = true
+        Lighting.GlobalShadows = true
+    end
 end
-local success,err=pcall(apply_rtx_shader);
-if not success then
-else
-end
+local performanceLevel = "medium"
+onDevicePerformance(performanceLevel)
 end)
 
 addcmd("rejoin", {"rj"}, function(args, speaker)
