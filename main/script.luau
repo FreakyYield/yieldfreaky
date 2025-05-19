@@ -12000,61 +12000,68 @@ addcmd('invisfling',{},function(args, speaker)
 end)
 
 addcmd('invisible',{},function(args, speaker)
-local height = 3
-local cloneref = cloneref or function(o) return o end
-if height > 4 then
-    height = 4
-end
-local lp = game.Players.LocalPlayer
-local c = lp.Character or lp.CharacterAdded:Wait()
-local hrp0 = c:FindFirstChild("HumanoidRootPart")
-local hrp1 = hrp0:Clone()
-local part = Instance.new("Part")
-part.Size = Vector3.new(0.5, 0.5, 0.5)
-part.Anchored = true
-part.CanCollide = false
-part.Transparency = 1
-part.BrickColor = BrickColor.new("Bright blue")
-part.Parent = workspace
-c.Parent = nil
-hrp0.Parent = hrp1
-hrp0.RootJoint.Part0 = nil
-hrp1.Parent = c
-c.Parent = workspace
-local animId = "rbxassetid://215384594"
-local anim = Instance.new("Animation")
-anim.AnimationId = animId
-local humanoid = c:WaitForChild("Humanoid")
-local animTrack = humanoid:LoadAnimation(anim)
-local h = game:GetService("RunService").Heartbeat
-for _, v in pairs(c:GetDescendants()) do
-    if v:IsA("BasePart") then
-        v.Transparency = 1
-    elseif v:IsA("Decal") then
-        v.Transparency = 1
+    local height = 3
+    local cloneref = cloneref or function(o) return o end
+    if height > 4 then
+        height = 4
     end
-end
-for _, v in pairs(c:GetChildren()) do
-    if v:IsA("Accessory") then
-        for _, p in pairs(v:GetDescendants()) do
-            if p:IsA("BasePart") then
-                p.Transparency = 1
+    local lp = game.Players.LocalPlayer
+    local c = lp.Character or lp.CharacterAdded:Wait()
+    local hrp0 = c:FindFirstChild("HumanoidRootPart")
+    local hrp1 = hrp0:Clone()
+    local part = Instance.new("Part")
+    part.Size = Vector3.new(0.5, 0.5, 0.5)
+    part.Anchored = true
+    part.CanCollide = false
+    part.Transparency = 1
+    part.BrickColor = BrickColor.new("Bright blue")
+    part.Parent = workspace
+    c.Parent = nil
+    hrp0.Parent = hrp1
+    hrp0.RootJoint.Part0 = nil
+    hrp1.Parent = c
+    c.Parent = workspace
+    local camera = game:GetService("Workspace").CurrentCamera
+    local originalCameraType = camera.CameraType
+    local originalSubject = camera.CameraSubject
+    camera.CameraType = Enum.CameraType.Custom
+    camera.CameraSubject = c:FindFirstChildOfClass("Humanoid")
+    
+    local animId = "rbxassetid://215384594"
+    local anim = Instance.new("Animation")
+    anim.AnimationId = animId
+    local humanoid = c:WaitForChild("Humanoid")
+    local animTrack = humanoid:LoadAnimation(anim)
+    local h = game:GetService("RunService").Heartbeat
+    for _, v in pairs(c:GetDescendants()) do
+        if v:IsA("BasePart") then
+            v.Transparency = 1
+        elseif v:IsA("Decal") then
+            v.Transparency = 1
+        end
+    end
+    for _, v in pairs(c:GetChildren()) do
+        if v:IsA("Accessory") then
+            for _, p in pairs(v:GetDescendants()) do
+                if p:IsA("BasePart") then
+                    p.Transparency = 1
+                end
             end
         end
     end
-end
-while h:Wait() and c and c.Parent do
-    humanoid.HipHeight = height
-    humanoid.JumpPower = 20
-    animTrack:Play()
-    animTrack:AdjustSpeed(0)
-    animTrack.TimePosition = 0.4
-    hrp0.CFrame = hrp1.CFrame 
-    hrp0.Orientation = Vector3.new(90, 0, 0)
-    hrp0.Position = hrp1.Position - Vector3.new(0, hrp0.Size.Y / 2, 0) 
-    hrp0.Velocity = hrp1.Velocity
-    part.Position = hrp0.Position + Vector3.new(-0.05, 0, 2.45)
-end
+    
+    while h:Wait() and c and c.Parent do
+        humanoid.HipHeight = height
+        humanoid.JumpPower = 20
+        animTrack:Play()
+        animTrack:AdjustSpeed(0)
+        animTrack.TimePosition = 0.4
+        hrp0.CFrame = hrp1.CFrame 
+        hrp0.Orientation = Vector3.new(90, 0, 0)
+        hrp0.Position = hrp1.Position - Vector3.new(0, hrp0.Size.Y / 2, 0) 
+        hrp0.Velocity = hrp1.Velocity
+        part.Position = hrp0.Position + Vector3.new(-0.05, 0, 2.45)
+    end
 end)
 
 
